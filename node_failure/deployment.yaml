@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: node-fail-test
+  name: node-fail-test
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: node-fail-test
+  template:
+    metadata:
+      labels:
+        app: node-fail-test
+    spec:
+      containers:
+      - image: nginx
+        name: node-fail
+        resources: 
+         requests:
+           memory: "64Mi"
+           cpu: "250m"
+         limits:
+           memory: "128Mi"
+           cpu: "500m"
+      #The default time that it takes from a node being reported as not-ready to the 
+      #pods being moved is 5 minutes. these tolerations will reduce that to 10 seconds 
+      tolerations:
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
