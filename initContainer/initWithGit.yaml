@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  volumes:
+  - name: wwwroot
+    emptyDir: {}
+  containers:
+  - name: webapp
+    image: nginx
+    volumeMounts:
+    - name: wwwroot
+      mountPath: /usr/share/nginx/html
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"       
+      requests:
+        memory: "64Mi"
+        cpu: "200m"  
+  initContainers:
+  - name: init-gitclone
+    image: bitnami/git:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"       
+      requests:
+        memory: "64Mi"
+        cpu: "200m"  
+    command: ['sh']
+    args: ['-c', 'git clone https://github.com/RandyPatterson/SampleStaticWebSite.git /wwwroot ']
+    volumeMounts:
+    - name: wwwroot
+      mountPath: /wwwroot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-svc
+  labels:
+    app: myapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: myapp
+  sessionAffinity: None
+  type: LoadBalancer
