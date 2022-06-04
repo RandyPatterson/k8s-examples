@@ -33,7 +33,7 @@ kubectl get all --show-labels -o wide
 attach to a debug container inside the cluster to access the **nginx-pod**
 
 ```bash 
-kubectl run debug-pod -it --rm --image=busybox
+kubectl run busybox -it --rm --image=busybox
 ```
 
 Test connection to pod via service 
@@ -131,7 +131,7 @@ wget: download timed out
 Add the label *role=debug* to the pod so the Network Policy will allow the traffic to the pod **nginx-pod**
 
 ```bash
-kubectl label pod/debug-pod  role=debug
+kubectl label pod/busybox  role=debug
 ```
 Verify that the debug pod can now communicate with the NGINX pod. From the attached debug pod - issue the command 
 ```bash
