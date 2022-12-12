@@ -1,0 +1,23 @@
+# AKS Cluster Auto Scaler 
+
+## Configure Autoscaler 
+[Cluster autoscaler docs](https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/aks/cluster-autoscaler.md#using-the-autoscaler-profile)
+
+[Cluster autoscaler docs #2](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler)
+
+
+update autoscaler to scale down after 1 minute (instead of 10) and scale up after 1 minutes (instead of 10)
+
+```bash
+az aks update -g workshop -n aksworkshop \      --cluster-autoscaler-profile \ 
+scale-down-delay-after-add=1m \ 
+scale-down-unneeded-time=1m \ 
+
+```
+>NOTE: for demo purposes only, in a production environment the best practice is to use the default 10 minute delay
+
+deploy application 
+```bash
+kubectl apply -f testdeploy.yaml
+```
+

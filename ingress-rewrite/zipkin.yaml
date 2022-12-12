@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: zipkin
+  name: zipkin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkin
+  template:
+    metadata:
+      labels:
+        app: zipkin
+    spec:
+      containers:
+      - image: openzipkin/zipkin
+        name: zipkin
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zipkin
+  name: zipkin
+spec:
+  ports:
+  - port: 9411
+    protocol: TCP
+    targetPort: 9411
+  selector:
+    app: zipkin
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Update nginx ingress controller config in ingress-base namespace
+# 1. Enable open tracing on NGINX ingress controller
+# 2. Add endpoint for zipkin collector
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-basic
+data:
+  enable-opentracing: 'true'
+  zipkin-collector-host: zipkin.default.svc.cluster.local
+  error-log-level : 'notice'
