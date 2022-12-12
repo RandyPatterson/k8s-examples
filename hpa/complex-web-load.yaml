@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-web-load
+spec:
+  selector:
+    matchLabels:
+      run: cw-load-generator
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: cw-load-generator
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux  
+      containers:
+      - name: cw-load-generator
+        image: busybox
+        args:
+        - /bin/sh
+        - -c
+        - while true; do wget -q -S -O- http://complex-web-svc.default.svc.cluster.local/?a=$RANDOM; done
+        imagePullPolicy: Always

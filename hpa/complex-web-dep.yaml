@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-web-dep
+spec:
+  selector:
+    matchLabels:
+      run: complex-web-pod
+  replicas: 2  
+  template:
+    metadata:
+      labels:
+        run: complex-web-pod
+        color: orange
+    spec:
+      containers:
+      - name: complex-web
+        image: k8s.gcr.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 400m
+            memory: 256Mi
