@@ -44,15 +44,13 @@ Get the Ingress Conroller Domain Name and copy to clipboard
 ``` bash
 az network public-ip show -g $ip_rg -n $ip_name --query dnsSettings.fqdn -o tsv
 ```
-<div style="border-radius: 25px; background: #FFBABA; padding: 20px; margin: 15px 0 15px 0" > 
-
-<div><b>NOTE:</div>
+> NOTE:</br>
 Your Domain Name will be different
-</b></div> 
+>
 
 ![](content/image-getfgdn.png)
 
-Edit ingress.yaml file and replace string hostname with your domain name from previous step 
+Edit ingress.yaml file and replace string **"[Replace]"** with your domain name from previous step 
 
 ```bash 
 code ingress.yaml
@@ -105,3 +103,7 @@ kubectl get ingress
 ```
 ![](content/image-get-ingress.png)
 
+## Cleanup
+```bash
+kubectl delete -f blue-deploy.yaml -f red-deploy.yaml -f ingress.yaml
+```

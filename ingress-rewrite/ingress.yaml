@@ -8,7 +8,7 @@ spec:
   ingressClassName: nginx
   rules:
   ##Change to the fqdn of the ingress controller
-  - host: workshoprrp.eastus.cloudapp.azure.com
+  - host: [Replace]
     http:
       paths:
       - path: /blue(/|$)(.*)

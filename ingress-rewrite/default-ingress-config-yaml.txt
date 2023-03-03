@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ingress-nginx-controller
-  namespace: ingress-basic
-data:
-  error-log-level: 'notice'
